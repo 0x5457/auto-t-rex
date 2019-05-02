@@ -1,0 +1,12 @@
+{
+  "name": "auto-t-rex",
+  "version": "1.0.0",
+  "description": "teach Google's Dinosaur to jump by tensroflow.js",
+  "author": "Tao Wei <t888y@qq.com>",
+  "icons": {
+    "16": "./assets/logo.png",
+    "48": "./assets/logo.png",
+    "128": "./assets/logo.png"
+  },
+  "manifest_version": 2
+}
