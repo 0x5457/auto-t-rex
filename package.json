@@ -28,5 +28,8 @@
     "source-map-loader": "^0.2.4",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^1.1.2"
   }
 }
