@@ -18,8 +18,9 @@ export class Model {
 
   /**
    * 训练模型
-   * @param {Array length 3} data  [障碍物x轴, 障碍物宽度,  当前速度]
-   * @param {Array length 2} label [0, 1] or [1, 0] 是否应该跳 one-hot
+   * 
+   * @param {Array} data  [障碍物x轴, 障碍物宽度,  当前速度]
+   * @param {Array} label [0, 1] or [1, 0] 是否应该跳 one-hot
    */
   train(data, label) {
     this.model.fit(tf.tensor1d(data), tf.tensor1d(label), {
@@ -30,8 +31,9 @@ export class Model {
 
   /**
    * 预测是否应该跳
-   * @param {Array length 3} data  [障碍物x轴, 障碍物宽度,  当前速度]
-   * @returns 是否应该跳的 one-hot
+   * 
+   * @param {Array} data  [障碍物x轴, 障碍物宽度,  当前速度]
+   * @return {Array} 是否应该跳的 one-hot
    */
   predict(data) {
     return this.model.predict(tf.tensor1d(data));
