@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
+
 /**
  * 神经网络模型类
  */
@@ -7,15 +8,22 @@ export default class Model {
    * 创建模型
    */
   constructor() {
+    this.inputs = [];
+    this.labels = [];
+
     this.model = tf.sequential({
       layers: [
-        tf.layers.dense({ inputShape: [3], units: 1 }),
-        tf.layers.dense({ units: 32, activation: 'relu' }),
-        tf.layers.dense({ units: 32, activation: 'relu' }),
-        tf.layers.dense({ units: 2, activation: 'sigmoid' }),
+        tf.layers.dense({ inputShape: [3], units: 2, activation: 'relu' }),
+        // tf.layers.dense({ units: 6, activation: 'relu' }),
+        tf.layers.dense({ units: 2, activation: 'softmax' }),
       ],
     });
-    this.model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy' });
+    this.model.summary();
+    this.model.compile({
+      optimizer: tf.train.adam(0.001),
+      loss: 'categoricalCrossentropy',
+      metrics: ['accuracy']
+    });
   }
 
   /**
@@ -23,19 +31,23 @@ export default class Model {
    *
    * @param {Array} data  [障碍物x轴, 障碍物宽度,  当前速度]
    * @param {Boolean} label 是否应该跳
-   * 
-   * @return {Object} 是否应该跳的
+   *
    */
   train(data, label) {
-    return this.model.fit(
-      tf
-        .tensor1d(data)
-        .reshape([1, 3])
-        .softmax(),
-      tf.tensor1d(label ? [1, 0] : [0, 1]).reshape([1, 2]),
+    this.inputs.push(data);
+    this.labels.push(label ? [1, 0] : [0, 1]);
+
+    this.model.fit(
+      tf.tensor2d(this.inputs).reshape([-1, 3]),
+      tf.tensor2d(this.labels).reshape([-1, 2]),
       {
-        batchSize: 1,
-        epochs: 1,
+        batchSize: 10,
+        epochs: 2,
+        callbacks: {
+          onBatchEnd (batch, logs) {
+            // console.log(batch, logs);
+          },
+        }
       },
     );
   }
@@ -47,14 +59,7 @@ export default class Model {
    * @return {Boolean} 是否应该跳的
    */
   predict(data) {
-    const predictRes = this.model
-      .predict(
-        tf
-          .tensor1d(data)
-          .reshape([1, 3])
-          .softmax(),
-      )
-      .arraySync();
+    const predictRes = this.model.predict(tf.tensor1d(data).reshape([-1, 3])).arraySync();
     return predictRes[0][0] > predictRes[0][1];
   }
 }
