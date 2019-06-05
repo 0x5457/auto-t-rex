@@ -1,4 +1,5 @@
 import Model from './Model';
+import './test';
 
 const m = new Model();
 

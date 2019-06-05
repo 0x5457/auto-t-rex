@@ -514,7 +514,7 @@ var extendStatics=function(e,t){return(extendStatics=Object.setPrototypeOf||{__p
 /*!******************************************************!*\
   !*** ./node_modules/@tensorflow/tfjs/dist/tf.esm.js ***!
   \******************************************************/
-/*! exports provided: data, version, AdadeltaOptimizer, AdagradOptimizer, AdamOptimizer, AdamaxOptimizer, DataStorage, ENV, Environment, KernelBackend, MomentumOptimizer, Optimizer, RMSPropOptimizer, Rank, Reduction, SGDOptimizer, Tensor, TensorBuffer, Variable, abs, acos, acosh, add, addN, addStrict, all, any, argMax, argMin, asin, asinh, atan, atan2, atanh, avgPool, backend, basicLSTMCell, batchNorm, batchNorm2d, batchNorm3d, batchNorm4d, batchNormalization, batchNormalization2d, batchNormalization3d, batchNormalization4d, batchToSpaceND, browser, buffer, cast, ceil, clipByValue, clone, complex, concat, concat1d, concat2d, concat3d, concat4d, conv1d, conv2d, conv2dDerFilter, conv2dTranspose, conv3d, cos, cosh, cumsum, customGrad, deprecationWarn, depthToSpace, depthwiseConv2d, disableDeprecationWarnings, dispose, disposeVariables, div, divStrict, dot, dropout, elu, enableDebugMode, enableProdMode, environment, equal, equalStrict, erf, exp, expandDims, expm1, eye, fft, fill, findBackend, findBackendFactory, floor, floorDiv, fused, gather, gatherND, getBackend, grad, grads, greater, greaterEqual, greaterEqualStrict, greaterStrict, hammingWindow, hannWindow, ifft, imag, image, io, irfft, isFinite, isInf, isNaN, keep, leakyRelu, less, lessEqual, lessEqualStrict, lessStrict, linalg, linspace, localResponseNormalization, log, log1p, logSigmoid, logSoftmax, logSumExp, logicalAnd, logicalNot, logicalOr, logicalXor, losses, matMul, math, max, maxPool, maximum, maximumStrict, mean, memory, min, minimum, minimumStrict, mod, modStrict, moments, movingAverage, mul, mulStrict, multiRNNCell, multinomial, neg, nextFrame, norm, notEqual, notEqualStrict, oneHot, ones, onesLike, op, outerProduct, pad, pad1d, pad2d, pad3d, pad4d, pool, pow, powStrict, prelu, print, prod, profile, rand, randomNormal, randomUniform, range, ready, real, reciprocal, registerBackend, relu, removeBackend, reshape, reverse, reverse1d, reverse2d, reverse3d, reverse4d, rfft, round, rsqrt, scalar, scatterND, selu, separableConv2d, serialization, setBackend, setdiff1dAsync, sigmoid, sign, sin, sinh, slice, slice1d, slice2d, slice3d, slice4d, softmax, softplus, spaceToBatchND, sparseToDense, spectral, split, sqrt, square, squaredDifference, squaredDifferenceStrict, squeeze, stack, step, stridedSlice, sub, subStrict, sum, tan, tanh, tensor, tensor1d, tensor2d, tensor3d, tensor4d, tensor5d, tensor6d, tensor_util, test_util, tidy, tile, time, topk, train, transpose, truncatedNormal, unsortedSegmentSum, unstack, util, valueAndGrad, valueAndGrads, variable, variableGrads, version_core, webgl, where, whereAsync, zeros, zerosLike, constraints, initializers, layers, metrics, models, regularizers, CallbackList, CustomCallback, History, Callback, callbacks, EarlyStopping, InputSpec, SymbolicTensor, LayersModel, input, loadLayersModel, model, registerCallbackConstructor, sequential, RNN, Sequential, LayerVariable, version_layers, GraphModel, loadGraphModel, version_converter */
+/*! exports provided: AdadeltaOptimizer, AdagradOptimizer, AdamOptimizer, AdamaxOptimizer, DataStorage, ENV, Environment, KernelBackend, MomentumOptimizer, Optimizer, RMSPropOptimizer, Rank, Reduction, SGDOptimizer, Tensor, TensorBuffer, Variable, abs, acos, acosh, add, addN, addStrict, all, any, argMax, argMin, asin, asinh, atan, atan2, atanh, avgPool, backend, basicLSTMCell, batchNorm, batchNorm2d, batchNorm3d, batchNorm4d, batchNormalization, batchNormalization2d, batchNormalization3d, batchNormalization4d, batchToSpaceND, browser, buffer, cast, ceil, clipByValue, clone, complex, concat, concat1d, concat2d, concat3d, concat4d, conv1d, conv2d, conv2dDerFilter, conv2dTranspose, conv3d, cos, cosh, cumsum, customGrad, deprecationWarn, depthToSpace, depthwiseConv2d, disableDeprecationWarnings, dispose, disposeVariables, div, divStrict, dot, dropout, elu, enableDebugMode, enableProdMode, environment, equal, equalStrict, erf, exp, expandDims, expm1, eye, fft, fill, findBackend, findBackendFactory, floor, floorDiv, fused, gather, gatherND, getBackend, grad, grads, greater, greaterEqual, greaterEqualStrict, greaterStrict, hammingWindow, hannWindow, ifft, imag, image, io, irfft, isFinite, isInf, isNaN, keep, leakyRelu, less, lessEqual, lessEqualStrict, lessStrict, linalg, linspace, localResponseNormalization, log, log1p, logSigmoid, logSoftmax, logSumExp, logicalAnd, logicalNot, logicalOr, logicalXor, losses, matMul, math, max, maxPool, maximum, maximumStrict, mean, memory, min, minimum, minimumStrict, mod, modStrict, moments, movingAverage, mul, mulStrict, multiRNNCell, multinomial, neg, nextFrame, norm, notEqual, notEqualStrict, oneHot, ones, onesLike, op, outerProduct, pad, pad1d, pad2d, pad3d, pad4d, pool, pow, powStrict, prelu, print, prod, profile, rand, randomNormal, randomUniform, range, ready, real, reciprocal, registerBackend, relu, removeBackend, reshape, reverse, reverse1d, reverse2d, reverse3d, reverse4d, rfft, round, rsqrt, scalar, scatterND, selu, separableConv2d, serialization, setBackend, setdiff1dAsync, sigmoid, sign, sin, sinh, slice, slice1d, slice2d, slice3d, slice4d, softmax, softplus, spaceToBatchND, sparseToDense, spectral, split, sqrt, square, squaredDifference, squaredDifferenceStrict, squeeze, stack, step, stridedSlice, sub, subStrict, sum, tan, tanh, tensor, tensor1d, tensor2d, tensor3d, tensor4d, tensor5d, tensor6d, tensor_util, test_util, tidy, tile, time, topk, train, transpose, truncatedNormal, unsortedSegmentSum, unstack, util, valueAndGrad, valueAndGrads, variable, variableGrads, version_core, webgl, where, whereAsync, zeros, zerosLike, constraints, initializers, layers, metrics, models, regularizers, CallbackList, CustomCallback, History, Callback, callbacks, EarlyStopping, InputSpec, SymbolicTensor, LayersModel, input, loadLayersModel, model, registerCallbackConstructor, sequential, RNN, Sequential, LayerVariable, version_layers, GraphModel, loadGraphModel, version_converter, data, version */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24601,6 +24601,14 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Model; });
 /* harmony import */ var _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tensorflow/tfjs */ "./node_modules/@tensorflow/tfjs/dist/tf.esm.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -24626,7 +24634,9 @@ function () {
     this.model = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["sequential"]({
       layers: [_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["layers"].dense({
         inputShape: [3],
-        units: 6,
+        units: 2
+      }), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["layers"].dense({
+        units: 2,
         activation: 'relu'
       }), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["layers"].dense({
         units: 1,
@@ -24635,7 +24645,7 @@ function () {
     });
     this.model.summary();
     this.model.compile({
-      optimizer: _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["train"].adam(1e-2),
+      optimizer: _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["train"].adam(1e-3),
       loss: 'binaryCrossentropy',
       metrics: ['accuracy']
     });
@@ -24654,7 +24664,13 @@ function () {
     value: function train(data, label) {
       this.inputs.push(data);
       this.labels.push(label ? 1 : 0);
-      this.model.trainOnBatch(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor2d"](this.inputs).reshape([-1, 3]), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor1d"](this.labels).toFloat().reshape([-1, 1]));
+      this.model.trainOnBatch(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor2d"](this.inputs).reshape([-1, 3]), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor1d"](this.labels).toFloat().reshape([-1, 1])).then(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            loss = _ref2[0],
+            metric = _ref2[1];
+
+        console.log("loss ".concat(loss, ", metric: ").concat(metric));
+      });
     }
     /**
      * 预测是否应该跳
@@ -24688,6 +24704,9 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Model */ "./src/Model.js");
+/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test */ "./src/test.js");
+/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_test__WEBPACK_IMPORTED_MODULE_1__);
+
 
 var m = new _Model__WEBPACK_IMPORTED_MODULE_0__["default"]();
 /**
@@ -24723,6 +24742,19 @@ var getGameInfo = function getGameInfo() {
 };
 
 requestAnimationFrame(getGameInfo);
+
+/***/ }),
+
+/***/ "./src/test.js":
+/*!*********************!*\
+  !*** ./src/test.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var inputs = [[0.32666666666666666, 0.085, 0.06346000000000115], [0.06833333333333333, 0.085, 0.06099000000000033], [0.235, 0.125, 0.07601000000000535], [0.30666666666666664, 0.125, 0.071980000000004], [0.25666666666666665, 0.125, 0.07116000000000372]];
+var labels = [0, 1, 1, 0, 0];
+console.log(inputs, labels);
 
 /***/ }),
 

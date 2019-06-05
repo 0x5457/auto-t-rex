@@ -13,15 +13,16 @@ export default class Model {
 
     this.model = tf.sequential({
       layers: [
-        tf.layers.dense({ inputShape: [3], units: 6, activation: 'relu' }),
+        tf.layers.dense({ inputShape: [3], units: 2 }),
+        tf.layers.dense({ units: 2, activation: 'relu' }),
         tf.layers.dense({ units: 1, activation: 'sigmoid' }),
       ],
     });
     this.model.summary();
     this.model.compile({
-      optimizer: tf.train.adam(1e-2),
+      optimizer: tf.train.adam(1e-3),
       loss: 'binaryCrossentropy',
-      metrics: ['accuracy']
+      metrics: ['accuracy'],
     });
   }
 
@@ -36,10 +37,17 @@ export default class Model {
     this.inputs.push(data);
     this.labels.push(label ? 1 : 0);
 
-    this.model.trainOnBatch(
-      tf.tensor2d(this.inputs).reshape([-1, 3]),
-      tf.tensor1d(this.labels).toFloat().reshape([-1, 1]),
-    );
+    this.model
+      .trainOnBatch(
+        tf.tensor2d(this.inputs).reshape([-1, 3]),
+        tf
+          .tensor1d(this.labels)
+          .toFloat()
+          .reshape([-1, 1]),
+      )
+      .then(([loss, metric]) => {
+        console.log(`loss ${loss}, metric: ${metric}`);
+      });
   }
 
   /**
