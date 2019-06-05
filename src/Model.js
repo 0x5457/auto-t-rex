@@ -13,15 +13,14 @@ export default class Model {
 
     this.model = tf.sequential({
       layers: [
-        tf.layers.dense({ inputShape: [3], units: 2, activation: 'relu' }),
-        // tf.layers.dense({ units: 6, activation: 'relu' }),
-        tf.layers.dense({ units: 2, activation: 'softmax' }),
+        tf.layers.dense({ inputShape: [3], units: 6, activation: 'relu' }),
+        tf.layers.dense({ units: 1, activation: 'sigmoid' }),
       ],
     });
     this.model.summary();
     this.model.compile({
-      optimizer: tf.train.adam(0.001),
-      loss: 'categoricalCrossentropy',
+      optimizer: tf.train.adam(1e-2),
+      loss: 'binaryCrossentropy',
       metrics: ['accuracy']
     });
   }
@@ -35,20 +34,11 @@ export default class Model {
    */
   train(data, label) {
     this.inputs.push(data);
-    this.labels.push(label ? [1, 0] : [0, 1]);
+    this.labels.push(label ? 1 : 0);
 
-    this.model.fit(
+    this.model.trainOnBatch(
       tf.tensor2d(this.inputs).reshape([-1, 3]),
-      tf.tensor2d(this.labels).reshape([-1, 2]),
-      {
-        batchSize: 10,
-        epochs: 2,
-        callbacks: {
-          onBatchEnd (batch, logs) {
-            // console.log(batch, logs);
-          },
-        }
-      },
+      tf.tensor1d(this.labels).toFloat().reshape([-1, 1]),
     );
   }
 
@@ -60,6 +50,6 @@ export default class Model {
    */
   predict(data) {
     const predictRes = this.model.predict(tf.tensor1d(data).reshape([-1, 3])).arraySync();
-    return predictRes[0][0] > predictRes[0][1];
+    return predictRes[0][0] > 0.5;
   }
 }

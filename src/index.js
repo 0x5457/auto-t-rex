@@ -18,11 +18,11 @@ const getGameInfo = () => {
 
   // 障碍物 xPos width 速度 runner.currentSpeed
   if (runner.horizon.obstacles.length > 0) {
+    
     const firstHorion = runner.horizon.obstacles[0];
     const data = normalization([firstHorion.xPos, firstHorion.width, runner.currentSpeed], runner.canvas.width);
-    const isJump = m.predict(data);
 
-    if (isJump) {
+    if (!runner.tRex.jumping && m.predict(data)) {
       runner.tRex.startJump(runner.currentSpeed);
     }
 
