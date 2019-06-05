@@ -5,8 +5,9 @@ module.exports = {
     index: './src/index.js',
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    // filename: '[name].js',
+    filename: 'ai.js',
+    path: path.resolve(__dirname, 'docs'),
   },
 
   devtool: 'source-map',
