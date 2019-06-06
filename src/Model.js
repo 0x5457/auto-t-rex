@@ -11,19 +11,27 @@ export default class Model {
     this.inputs = [];
     this.labels = [];
 
-    this.model = tf.sequential({
-      layers: [
-        tf.layers.dense({ inputShape: [3], units: 2 }),
-        tf.layers.dense({ units: 2, activation: 'relu' }),
-        tf.layers.dense({ units: 1, activation: 'sigmoid' }),
-      ],
-    });
-    this.model.summary();
-    this.model.compile({
-      optimizer: tf.train.adam(1e-3),
-      loss: 'binaryCrossentropy',
-      metrics: ['accuracy'],
-    });
+    this.w1 = tf.variable(tf.randomNormal([3, 6]));
+    this.b1 = tf.variable(tf.randomNormal([6]));
+    this.w2 = tf.variable(tf.randomNormal([6, 2]));
+    this.b2 = tf.variable(tf.randomNormal([2]));
+    this.optimizer = tf.train.adam(0.3);
+  }
+
+  /**
+   * 模型
+   *
+   * @param {Array} x
+   * @return {Array} predY
+   */
+  model(x) {
+    return tf
+      .tensor(x)
+      .reshape([-1, 3])
+      .matMul(this.w1)
+      .add(this.b1)
+      .matMul(this.w2)
+      .add(this.b2);
   }
 
   /**
@@ -35,19 +43,17 @@ export default class Model {
    */
   train(data, label) {
     this.inputs.push(data);
-    this.labels.push(label ? 1 : 0);
+    this.labels.push(label ? [1, 0] : [0, 1]);
 
-    this.model
-      .trainOnBatch(
-        tf.tensor2d(this.inputs).reshape([-1, 3]),
-        tf
-          .tensor1d(this.labels)
-          .toFloat()
-          .reshape([-1, 1]),
-      )
-      .then(([loss, metric]) => {
-        console.log(`loss ${loss}, metric: ${metric}`);
-      });
+    this.optimizer.minimize(() => {
+      const predYs = this.model(this.inputs);
+
+      const loss = tf.losses.sigmoidCrossEntropy(tf.tensor2d(this.labels).reshape([-1, 2]), predYs);
+
+      loss.data().then(l => console.log('Loss', l));
+
+      return loss;
+    });
   }
 
   /**
@@ -57,7 +63,7 @@ export default class Model {
    * @return {Boolean} 是否应该跳的
    */
   predict(data) {
-    const predictRes = this.model.predict(tf.tensor1d(data).reshape([-1, 3])).arraySync();
-    return predictRes[0][0] > 0.5;
+    const predictRes = this.model(data).arraySync();
+    return predictRes[0][0] > predictRes[0][1];
   }
 }

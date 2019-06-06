@@ -1,5 +1,5 @@
 import Model from './Model';
-import './test';
+// import './test';
 
 const m = new Model();
 

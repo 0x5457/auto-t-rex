@@ -24601,14 +24601,6 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Model; });
 /* harmony import */ var _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tensorflow/tfjs */ "./node_modules/@tensorflow/tfjs/dist/tf.esm.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -24631,45 +24623,48 @@ function () {
 
     this.inputs = [];
     this.labels = [];
-    this.model = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["sequential"]({
-      layers: [_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["layers"].dense({
-        inputShape: [3],
-        units: 2
-      }), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["layers"].dense({
-        units: 2,
-        activation: 'relu'
-      }), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["layers"].dense({
-        units: 1,
-        activation: 'sigmoid'
-      })]
-    });
-    this.model.summary();
-    this.model.compile({
-      optimizer: _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["train"].adam(1e-3),
-      loss: 'binaryCrossentropy',
-      metrics: ['accuracy']
-    });
+    this.w1 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([3, 6]));
+    this.b1 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([6]));
+    this.w2 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([6, 2]));
+    this.b2 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([2]));
+    this.optimizer = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["train"].adam(0.3);
   }
   /**
-   * 训练模型
+   * 模型
    *
-   * @param {Array} data  [障碍物x轴, 障碍物宽度,  当前速度]
-   * @param {Boolean} label 是否应该跳
-   *
+   * @param {Array} x
+   * @return {Array} predY
    */
 
 
   _createClass(Model, [{
+    key: "model",
+    value: function model(x) {
+      return _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor"](x).reshape([-1, 3]).matMul(this.w1).add(this.b1).matMul(this.w2).add(this.b2);
+    }
+    /**
+     * 训练模型
+     *
+     * @param {Array} data  [障碍物x轴, 障碍物宽度,  当前速度]
+     * @param {Boolean} label 是否应该跳
+     *
+     */
+
+  }, {
     key: "train",
     value: function train(data, label) {
-      this.inputs.push(data);
-      this.labels.push(label ? 1 : 0);
-      this.model.trainOnBatch(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor2d"](this.inputs).reshape([-1, 3]), _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor1d"](this.labels).toFloat().reshape([-1, 1])).then(function (_ref) {
-        var _ref2 = _slicedToArray(_ref, 2),
-            loss = _ref2[0],
-            metric = _ref2[1];
+      var _this = this;
 
-        console.log("loss ".concat(loss, ", metric: ").concat(metric));
+      this.inputs.push(data);
+      this.labels.push(label ? [1, 0] : [0, 1]);
+      this.optimizer.minimize(function () {
+        var predYs = _this.model(_this.inputs);
+
+        var loss = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["losses"].sigmoidCrossEntropy(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor2d"](_this.labels).reshape([-1, 2]), predYs);
+        loss.data().then(function (l) {
+          return console.log('Loss', l);
+        });
+        return loss;
       });
     }
     /**
@@ -24682,8 +24677,8 @@ function () {
   }, {
     key: "predict",
     value: function predict(data) {
-      var predictRes = this.model.predict(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor1d"](data).reshape([-1, 3])).arraySync();
-      return predictRes[0][0] > 0.5;
+      var predictRes = this.model(data).arraySync();
+      return predictRes[0][0] > predictRes[0][1];
     }
   }]);
 
@@ -24704,9 +24699,7 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Model */ "./src/Model.js");
-/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test */ "./src/test.js");
-/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_test__WEBPACK_IMPORTED_MODULE_1__);
-
+ // import './test';
 
 var m = new _Model__WEBPACK_IMPORTED_MODULE_0__["default"]();
 /**
@@ -24742,19 +24735,6 @@ var getGameInfo = function getGameInfo() {
 };
 
 requestAnimationFrame(getGameInfo);
-
-/***/ }),
-
-/***/ "./src/test.js":
-/*!*********************!*\
-  !*** ./src/test.js ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var inputs = [[0.32666666666666666, 0.085, 0.06346000000000115], [0.06833333333333333, 0.085, 0.06099000000000033], [0.235, 0.125, 0.07601000000000535], [0.30666666666666664, 0.125, 0.071980000000004], [0.25666666666666665, 0.125, 0.07116000000000372]];
-var labels = [0, 1, 1, 0, 0];
-console.log(inputs, labels);
 
 /***/ }),
 
