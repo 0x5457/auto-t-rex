@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --watch --mode=development",
+    "build": "webpack --mode=production",
     "lint:fix": "eslint --fix src/**/*.js"
   },
   "keywords": [
