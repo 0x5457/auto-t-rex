@@ -8,6 +8,7 @@ export default class Model {
    * 创建模型
    */
   constructor() {
+    tf.setBackend('webgl');
     this.inputs = [];
     this.labels = [];
 
@@ -27,8 +28,7 @@ export default class Model {
    */
   model(x) {
     return tf.tidy(() => {
-      return tf
-        .tensor(x)
+      return tf.tensor(x)
         .reshape([-1, 3])
         .matMul(this.w1)
         .add(this.b1)
@@ -47,7 +47,7 @@ export default class Model {
   train(data, label) {
     this.inputs.push(data);
     this.labels.push(label ? [1, 0] : [0, 1]);
-    
+
     tf.tidy(() => {
       for (let i = 0; i < 30; i++) {
         this.optimizer.minimize(() => {
