@@ -11,9 +11,9 @@ export default class Model {
     this.inputs = [];
     this.labels = [];
 
-    this.w1 = tf.variable(tf.randomNormal([3, 6]));
-    this.b1 = tf.variable(tf.randomNormal([6]));
-    this.w2 = tf.variable(tf.randomNormal([6, 2]));
+    this.w1 = tf.variable(tf.randomNormal([3, 3]));
+    this.b1 = tf.variable(tf.randomNormal([3]));
+    this.w2 = tf.variable(tf.randomNormal([3, 2]));
     this.b2 = tf.variable(tf.randomNormal([2]));
 
     this.optimizer = tf.train.adam(0.1);
@@ -49,7 +49,7 @@ export default class Model {
     this.labels.push(label ? [1, 0] : [0, 1]);
     
     tf.tidy(() => {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 30; i++) {
         this.optimizer.minimize(() => {
           const predYs = this.model(this.inputs);
 
