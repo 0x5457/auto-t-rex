@@ -15,7 +15,8 @@ export default class Model {
     this.b1 = tf.variable(tf.randomNormal([6]));
     this.w2 = tf.variable(tf.randomNormal([6, 2]));
     this.b2 = tf.variable(tf.randomNormal([2]));
-    this.optimizer = tf.train.adam(0.3);
+
+    this.optimizer = tf.train.adam(0.1);
   }
 
   /**
@@ -25,13 +26,15 @@ export default class Model {
    * @return {Array} predY
    */
   model(x) {
-    return tf
-      .tensor(x)
-      .reshape([-1, 3])
-      .matMul(this.w1)
-      .add(this.b1)
-      .matMul(this.w2)
-      .add(this.b2);
+    return tf.tidy(() => {
+      return tf
+        .tensor(x)
+        .reshape([-1, 3])
+        .matMul(this.w1)
+        .add(this.b1)
+        .matMul(this.w2)
+        .add(this.b2);
+    });
   }
 
   /**
@@ -44,15 +47,20 @@ export default class Model {
   train(data, label) {
     this.inputs.push(data);
     this.labels.push(label ? [1, 0] : [0, 1]);
+    
+    tf.tidy(() => {
+      for (let i = 0; i < 100; i++) {
+        this.optimizer.minimize(() => {
+          const predYs = this.model(this.inputs);
 
-    this.optimizer.minimize(() => {
-      const predYs = this.model(this.inputs);
-
-      const loss = tf.losses.sigmoidCrossEntropy(tf.tensor2d(this.labels).reshape([-1, 2]), predYs);
-
-      loss.data().then(l => console.log('Loss', l));
-
-      return loss;
+          const loss = tf.losses.sigmoidCrossEntropy(
+            tf.tensor2d(this.labels).reshape([-1, 2]),
+            predYs,
+          );
+          // loss.data().then(l => console.log('Loss', l));
+          return loss;
+        });
+      }
     });
   }
 
