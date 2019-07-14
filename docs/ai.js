@@ -24627,7 +24627,7 @@ function () {
     this.b1 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([6]));
     this.w2 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([6, 2]));
     this.b2 = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["variable"](_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["randomNormal"]([2]));
-    this.optimizer = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["train"].adam(0.3);
+    this.optimizer = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["train"].adam(0.1);
   }
   /**
    * 模型
@@ -24640,7 +24640,11 @@ function () {
   _createClass(Model, [{
     key: "model",
     value: function model(x) {
-      return _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor"](x).reshape([-1, 3]).matMul(this.w1).add(this.b1).matMul(this.w2).add(this.b2);
+      var _this = this;
+
+      return _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tidy"](function () {
+        return _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor"](x).reshape([-1, 3]).matMul(_this.w1).add(_this.b1).matMul(_this.w2).add(_this.b2);
+      });
     }
     /**
      * 训练模型
@@ -24653,18 +24657,20 @@ function () {
   }, {
     key: "train",
     value: function train(data, label) {
-      var _this = this;
+      var _this2 = this;
 
       this.inputs.push(data);
       this.labels.push(label ? [1, 0] : [0, 1]);
-      this.optimizer.minimize(function () {
-        var predYs = _this.model(_this.inputs);
+      _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tidy"](function () {
+        for (var i = 0; i < 100; i++) {
+          _this2.optimizer.minimize(function () {
+            var predYs = _this2.model(_this2.inputs);
 
-        var loss = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["losses"].sigmoidCrossEntropy(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor2d"](_this.labels).reshape([-1, 2]), predYs);
-        loss.data().then(function (l) {
-          return console.log('Loss', l);
-        });
-        return loss;
+            var loss = _tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["losses"].sigmoidCrossEntropy(_tensorflow_tfjs__WEBPACK_IMPORTED_MODULE_0__["tensor2d"](_this2.labels).reshape([-1, 2]), predYs); // loss.data().then(l => console.log('Loss', l));
+
+            return loss;
+          });
+        }
       });
     }
     /**
@@ -24699,18 +24705,17 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Model */ "./src/Model.js");
- // import './test';
 
 var m = new _Model__WEBPACK_IMPORTED_MODULE_0__["default"]();
+var lastJumpData = [];
 /**
  * 归一化输入数据
  * @param {Array} data
- * @param {Number} canvasWidth
  * @return {Array} 归一化后的数据
  */
 
-function normalization(data, canvasWidth) {
-  return [data[0] / canvasWidth, data[1] / canvasWidth, data[2] / 100];
+function normalization(data) {
+  return [data[0] / 600, data[1] / 600, data[2] / 100];
 }
 
 var getGameInfo = function getGameInfo() {
@@ -24719,14 +24724,20 @@ var getGameInfo = function getGameInfo() {
 
   if (runner.horizon.obstacles.length > 0) {
     var firstHorion = runner.horizon.obstacles[0];
-    var data = normalization([firstHorion.xPos, firstHorion.width, runner.currentSpeed], runner.canvas.width);
+    var data = normalization([firstHorion.xPos, firstHorion.width, runner.currentSpeed]);
 
     if (!runner.tRex.jumping && m.predict(data)) {
+      lastJumpData = data;
       runner.tRex.startJump(runner.currentSpeed);
     }
 
     if (runner.crashed) {
-      m.train(data, !runner.tRex.jumping);
+      if (runner.tRex.jumping) {
+        m.train(lastJumpData, !runner.tRex.jumping);
+      } else {
+        m.train(data, !runner.tRex.jumping);
+      }
+
       runner.restart();
     }
   }
