@@ -36,5 +36,7 @@ const getGameInfo = () => {
   }
   requestAnimationFrame(getGameInfo);
 };
+window.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(getGameInfo);
+})
 
-requestAnimationFrame(getGameInfo);
